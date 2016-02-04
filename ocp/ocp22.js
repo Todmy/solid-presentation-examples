@@ -1,23 +1,24 @@
-var filtersStrategy = {
-    strategies: {
-      date: function(input) {
-        return input.getFullYear() + '-' + input.getMonth() + '-' + input.getDay();
-      },
+function formatField(fieldType, input) {
+  var format = formatField.strategies[fieldType] || _.identity;
 
-      email: function(input) {
-        var splitedEmail = input.split('@');
+  return format(input);
+}
 
-        return { splitedEmail[1]: splitedEmail[0] };
-      },
+formatField.strategies = {
+  date: function(input) {
+    return input.getFullYear() + '-' + input.getMonth() + '-' + input.getDay();
+  },
 
-      number: function(input) {
-        return Math.round(input);
-      }
-    },
+  email: function(input) {
+    var splitedEmail = input.split('@');
 
-    transform: function(fildType, input) {
-      var format = this.strategies[fildType] || _.identity;
+    return splitedEmail[0]
+  },
 
-      return format(input);
-    }
-  };
+  number: function(input) {
+    return Math.round(input);
+  }
+}
+
+var formatedEmail = formatField('email', 'my-test@google.com');
+console.log(formatedEmail);
