@@ -1,7 +1,5 @@
-function formatField(fieldType, input) {
-  var format = formatField.strategies[fieldType] || _.identity;
-
-  return format(input);
+function formatField(fieldType) {
+  return formatField.strategies[fieldType] || _.identity;
 }
 
 formatField.strategies = {
@@ -20,5 +18,5 @@ formatField.strategies = {
   }
 }
 
-var formatedEmail = formatField('email', 'my-test@google.com');
-console.log(formatedEmail);
+var formatEmail = formatField('email');
+console.log(formatEmail('my-test@google.com'));

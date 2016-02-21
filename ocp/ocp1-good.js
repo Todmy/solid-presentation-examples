@@ -1,9 +1,9 @@
 function User(userPlan) {
-  this.strategy = userPlan;
+  this.plan = userPlan;
 }
 
 User.prototype.printRules = function () {
-  console.log(this.rules);
+  console.log(this.plan.rules);
 };
 
 function BronzePlan() {
@@ -20,4 +20,5 @@ function GoldPlan() {
   this.admin = true;
 };
 
-var user = new User(new GoldPlan())
+var user = new User(new GoldPlan());
+user.printRules();

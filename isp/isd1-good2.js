@@ -2,9 +2,9 @@ function Product(id) {
   this.id = id;
 }
 
-Product.prototype.setProductOptions = function() {
-  this.weight = 4;
-  this.height = 5;
+Product.prototype.setProductOptions = function(weight, height) {
+  this.weight = weight;
+  this.height = height;
 };
 
 Product.prototype.calculatePrice = function () {
@@ -15,14 +15,14 @@ Product.prototype.sell = function() {
   console.log(this.id + '-id is sold with price ' + this.price);
 };
 
-function initProduct(id) {
-  var chair = new Product(id);
+function ChairBuilder(attributes) {
+  var chair = new Product(attributes.id);
 
-  chair.setProductOptions();
+  chair.setProductOptions(attributes.weight, attributes.height);
   chair.calculatePrice();
 
   return chair;
 }
 
-var chair = initProduct('1111');
+var chair = ChairBuilder({ id: '1111', weight: 4, height: 5 });
 chair.sell()

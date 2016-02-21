@@ -1,143 +1,63 @@
 function User(name) {
   this.name = name;
+  this.services = {};
 }
 
-Object.defineProperties(User.prototype, {
-  'name': {
-    set: function(name) {
-      this._name = name;
-    },
+User.prototype.addService = function(Service) {
+  var serviceName = Service.name;
 
-    get: function() {
-      return this._name;
-    }
-  },
+  this.services[serviceName] = new Service(this.name);
 
-  'mailBox': {
-    set: function(email) {
-      this._mailBox = email;
-    },
-
-    get: function() {
-      return this._mailBox;
-    }
-  }
-});
-
-User.prototype.initEmailAddress = function (emailName) {
-  this.mailBox = new MailBox(this, emailName);
-
-  return this;
+  return this.services[serviceName];
 };
 
-function MailBox(owner, emailName) {
-  this.owner = owner
+function service(serviceName, options) {
+  return serviceName.bind(null, options);
+}
+
+function MailBox(emailName, ownerName) {
   this.email = emailName;
+  this.owner = ownerName;
 };
 
-Object.defineProperties(MailBox.prototype, {
-  'email': {
-    set: function(emailName) {
-      this._email = emailName;
-    },
+MailBox.prototype.addLetter = function(draft) {
+  this.letters = this.letters || [];
+  this.letters.push(draft);
+  draft.sender = this.email;
+  draft.name = this.owner;
 
-    get: function() {
-      return this._email;
-    }
-  },
-
-  'owner': {
-    set: function(owner) {
-      this._owner = {
-        name: owner.name
-      };
-    },
-
-    get: function() {
-      return this._owner;
-    }
-  }
-});
-
-MailBox.prototype.letter = function (attributes) {
-  attributes.sender = {
-    email: this.email,
-    name: this.owner.name
-  };
-  this._letter = new Letter(attributes);
-
-  return this._letter;
+  return draft;
 };
 
-MailBox.prototype.sendLetter = function () {
-  console.log('send letter ---> ', this._letter.data)
+MailBox.prototype.send = function(letter) {
+  console.log('send letter ---> ', letter.data)
 };
 
-function Letter(attributes) {
-  this._data = {};
-  this.sender = attributes.sender;
+function Draft(attributes) {
   this.title = attributes.title;
   this.text = attributes.text;
 }
 
-Object.defineProperties(Letter.prototype, {
-  'sender': {
-    set: function(sender) {
-      this._sender = sender;
-    },
-
-    get: function() {
-      return this._sender;
-    }
-  },
-
-  'recipient': {
-    set: function(recipient) {
-      this._recipient = recipient;
-    },
-
-    get: function() {
-      return this._recipient;
-    }
-  },
-
-  'title': {
-    set: function(title) {
-      this._title = title;
-    },
-
-    get: function() {
-      return this._title;
-    }
-  },
-
-  'text': {
-    set: function(text) {
-      this._text = text;
-    },
-
-    get: function() {
-      return this._text;
-    }
-  },
-
+Object.defineProperties(Draft.prototype, {
   'data': {
     get: function() {
-      return { sender: this._sender.email,
-        recipient: this._recipient,
-        title: this._title,
-        text: this._text  + ' from ' + this._sender.name
+      return { sender: this.sender,
+        recipient: this.recipient,
+        title: this.title,
+        text: this.text  + ' from ' + this.name
       }
     }
   }
 });
 
-Letter.prototype.to = function (recipient) {
+Draft.prototype.to = function(recipient) {
   this.recipient = recipient;
 
   return this;
 };
 
-var user = new User('Bob').initEmailAddress('bob@test.com');
-user.mailBox.letter({ title: 'title', text: 'text' }).to('Bill@doom.com');
-user.mailBox.sendLetter();
+var user = new User('Bob');
+var userMailBox = user.addService(service(MailBox, 'bob@test.com'));
+var blankLetter = new Draft({ title: 'title', text: 'text' });
+var letter = userMailBox.addLetter(blankLetter).to('Bill@doom.com');
+userMailBox.send(letter);

@@ -3,13 +3,13 @@ function User(options) {
   this._email = options.email;
 }
 
-User.prototype.newLetter = function (attributes){
+User.prototype.newLetter = function(attributes){
   this._recipient = attributes.recipient;
   this._title = attributes.title;
   this._text = attributes.text;
 };
 
-User.prototype.sendLetter = function () {
+User.prototype.sendLetter = function() {
   console.log('send letter ---> ', {
     sender: this._email,
     recipient: this._recipient,

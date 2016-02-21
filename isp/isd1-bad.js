@@ -2,9 +2,9 @@ function Product(id) {
   this.id = id;
 }
 
-Product.prototype.setProductOptions = function() {
-  this.weight = 4;
-  this.height = 5;
+Product.prototype.setProductOptions = function(weight, height) {
+  this.weight = weight;
+  this.height = height;
 };
 
 Product.prototype.calculatePrice = function () {
@@ -16,6 +16,6 @@ Product.prototype.sell = function() {
 };
 
 var chair = new Product('1111');
-chair.setProductOptions();
+chair.setProductOptions(4, 5);
 chair.calculatePrice();
 chair.sell();
