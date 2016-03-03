@@ -1,7 +1,6 @@
 class Book {
   constructor ({ author, title }) {
-    console.log(author, title)
-  	Object.assign(this, { author, title })
+  	Object.assign(this, { author, title });
   }
 
   getAuthor() {
@@ -13,9 +12,9 @@ class Book {
   }
 
   print() {
-  	console.log('Page is printed');
+  	console.log('Page is printed('+ this.author + ' - ' + this.title +')');
   }
 }
 
 var myBook = new Book({ author: 'Joanne "Jo" Rowling', title: 'Harry Potter' });
-myBook.print()
+myBook.print();
