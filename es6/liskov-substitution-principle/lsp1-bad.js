@@ -1,27 +1,46 @@
-function PlaneTextEditor(text) {
-  this.text = text;
+class Resource {
+  constructor() {
+  	  var self = this;
+      var abstractMethods = [ 'load', 'display' ];
+
+      if(new.target === Resource) {
+        throw new TypeError('Cannot construct Abstract instances directly');
+      }
+
+      abstractMethods.forEach(function(method) {
+        if(self[method] === undefined) {
+          throw new TypeError('Class ' + self.constructor.name + ' must have ' + method + ' method');
+        }
+      });
+  }
 }
 
-PlaneTextEditor.prototype.splitIntoRows = function() {
-  return this.text.split('\n');
-};
+class Image extends Resource {
+  load() {
+    console.log('Image is loaded!');
+  }
 
-PlaneTextEditor.prototype.parseToJson = function () {
-  return JSON.parse(this.text);
-};
-
-function htmlEditor(html) {
-  PlaneTextEditor.call(this, html);
+  display() {
+    console.log('Image is displayed!');
+  }
 }
 
-htmlEditor.prototype = Object.create(PlaneTextEditor.prototype);
+class Record extends Resource {
+  load() {
+    console.log('Record is loaded!');
+  }
 
-htmlEditor.prototype.splitIntoRows = function() {
-  return this.text.split(/\<\/?\w*\>/);
-};
+  display() {
+    throw new Error('Record can not be displayed!');
+  }
+}
 
-var someTextOrHtml = '<p>Make it <br> perfect</p>';
-var myEditor1 = new PlaneTextEditor(someTextOrHtml);
-var myEditor2 = new htmlEditor(someTextOrHtml);
+var resources = [ new Image(), new Record()]
 
-console.log(myEditor1.splitIntoRows() !== myEditor2.splitIntoRows());
+resources.forEach(function(resource) {
+  resource.load();
+});
+
+resources.forEach(function(resource) {
+  resource.display();
+});

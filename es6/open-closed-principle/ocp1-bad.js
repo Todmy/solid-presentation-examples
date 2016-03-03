@@ -1,19 +1,43 @@
-function User(type) {
-  switch (type) {
-    case 'bronze':
-      this.rules = [ 'view', 'comment' ];
+class Abilities {
+  constructor(hero) {
+    switch(hero.type) {
+      case 'strangth':
+        this.showPower(hero);
+        break;
+      case 'speed':
+        this.runFasterThanLight(hero);
+        break;
+    }
+  }
 
-      break;
-    case 'silver':
-      this.rules = [ 'view', 'comment', 'write', 'send' ];
-      this.friendsAmount = 2;
+  showPower(hero) {
+  	hero.showBiceps();
+  }
 
-      break;
-    case 'gold':
-      this.rules = [ 'view', 'write', 'send', 'edit', 'sell' ];
-      this.friendsAmount = 4;
-      this.admin = true;
-
-      break;
+  runFasterThanLight(hero) {
+  	hero.overtakeTheCar();
   }
 }
+
+class Superman {
+  constructor() {
+    this.type = 'strangth';
+  }
+
+  showBiceps() {
+    console.log('Look at my biceps!');
+  }
+}
+
+class Flash {
+  constructor() {
+    this.type = 'speed';
+  }
+
+  overtakeTheCar() {
+    console.log('I am the fastest!');
+  }
+}
+
+var showTime1 = new Abilities(new Superman());
+var showTime2 = new Abilities(new Flash());

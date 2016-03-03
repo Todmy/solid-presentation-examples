@@ -14,7 +14,5 @@ function formatField(fieldType, input) {
   }
 }
 
-
-
 var formatedEmail = formatField('email', 'my-test@google.com');
 console.log(formatedEmail);

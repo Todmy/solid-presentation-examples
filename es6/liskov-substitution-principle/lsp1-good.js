@@ -1,25 +1,38 @@
-function PlaneTextEditor(text) {
-  this.text = text;
+class Resource {
+  constructor() {
+  	  var self = this;
+      var abstractMethods = [ 'load' ];
+
+      if(new.target === Resource) {
+        throw new TypeError('Cannot construct Abstract instances directly');
+      }
+
+      abstractMethods.forEach(function(method) {
+        if(self[method] === undefined) {
+          throw new TypeError('Class ' + self.constructor.name + ' must have ' + method + ' method');
+        }
+      });
+  }
 }
 
-PlaneTextEditor.prototype.splitIntoRows = function() {
-  return this.text.split('\n');
-};
+class Image extends Resource {
+  load() {
+    console.log('Image is loaded!');
+  }
 
-PlaneTextEditor.prototype.parseToJson = function () {
-  return JSON.parse(this.text);
-};
-
-function htmlEditor(html) {
-  this.html = html;
+  display() {
+    console.log('Image is displayed!');
+  }
 }
 
-htmlEditor.prototype.splitIntoRows = function() {
-  return this.text.split(/\<\/?\w*\>/);
-};
+class Record extends Resource {
+  load() {
+    console.log('Record is loaded!');
+  }
+}
 
-var someTextOrHtml = '<p>Make it <br> perfect</p>';
-var myEditor1 = new PlaneTextEditor(someTextOrHtml);
-var myEditor2 = new htmlEditor(someTextOrHtml);
+var resources = [ new Image(), new Record()]
 
-// myEditor1 and myEditor2 make different things so they did not inherited from each other
+resources.forEach(function(resource) {
+  resource.load();
+});
