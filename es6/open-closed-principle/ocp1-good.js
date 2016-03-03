@@ -1,24 +1,37 @@
-function User(userPlan) {
-  this.plan = userPlan;
+class Abilities {
+  constructor(hero) {
+    hero.action();
+  }
 }
 
-User.prototype.printRules = function () {
-  console.log(this.plan.rules);
-};
+class Hero {
+  constructor() {
+    var self = this;
+    var abstractMethods = [ 'action' ];
 
-function BronzePlan() {
-  this.rules = [ 'view', 'comment' ];
-};
-function SilverPlan() {
-  this.rules = [ 'view', 'comment', 'write', 'send' ];
-  this.friendsAmount = 2;
-};
+    if(new.target === Hero) {
+      throw new TypeError('Cannot construct Abstract instances directly');
+    }
 
-function GoldPlan() {
-  this.rules = [ 'view', 'write', 'edit', 'sell' ];
-  this.friendsAmount = 4;
-  this.admin = true;
-};
+    abstractMethods.forEach(function(method) {
+      if(self[method] === undefined) {
+        throw new TypeError('Class ' + self.constructor.name + ' must have ' + method + ' method');
+      }
+    });
+  }
+}
 
-var user = new User(new GoldPlan());
-user.printRules();
+class Superman extends Hero {
+  action() {
+    console.log('Look at my biceps!');
+  }
+}
+
+class Flash extends Hero {
+  action() {
+    console.log('I am the fastest!');
+  }
+}
+
+var showTime1 = new Abilities(new Superman());
+var showTime2 = new Abilities(new Flash());
